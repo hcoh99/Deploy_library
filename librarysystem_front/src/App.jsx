@@ -1,25 +1,25 @@
 // src/App.jsx
 import React from "react";
-import { Routes, Route, createBrowserRouter, RouterProvider } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import Layout from "./layout/Layout";
-import MainPage from "./pages/MainPage";
-import NewBookPage from "./pages/NewBookPage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
 
-export default function App() {
-  const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Layout />,
-    children: [
-      { index: true, element: <MainPage /> },
-      { path: "/add-book", element: <NewBookPage /> },
-    ],
-  }
-]);
-
-  return (
-    <RouterProvider router={router} />
-  );
+function PlaceholderPage() {
+  return <h2>테스트 메인 화면 입니다~</h2>;
 }
 
+export default function App() {
+  return (
+    <Routes>
+      {/* 노 레이아웃 */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+
+      <Route element={<Layout />}>
+        <Route path="/" element={<PlaceholderPage />} />
+      </Route>
+    </Routes>
+  );
+}
