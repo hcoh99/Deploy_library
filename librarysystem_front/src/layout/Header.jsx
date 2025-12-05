@@ -15,7 +15,7 @@ const SearchBox = styled("div")(() => ({
   position: "relative",
   borderRadius: 8,
   backgroundColor: "#f1f3f5",
-  width: "00%", // 화면에 따라 자동 확장
+  width: "100%", // 화면에 따라 자동 확장
   display: "flex",
   alignItems: "center",
   padding: "6px 14px",
