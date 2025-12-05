@@ -95,9 +95,9 @@ export default function Header() {
               px: 2.5,
               py: 0.8,
               fontWeight: 600,
-              whiteSpace: "nowrap", // ⭐ 글자 줄바꿈 방지
-              minWidth: 96, // ⭐ 최소 너비 고정 (대략 '회원가입'이 딱 맞는 정도)
-              flexShrink: 0, // ⭐ 화면 줄어들어도 버튼 크기 유지
+              whiteSpace: "nowrap",
+              minWidth: 96,
+              flexShrink: 0,
             }}
             onClick={() => navigate("/signup")}
           >
