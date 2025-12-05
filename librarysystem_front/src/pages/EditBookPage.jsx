@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-// useEffect 추가 예정
+
 export default function EditBookPage() {
   const navigate = useNavigate();
   const { book_id } = useParams();
 
-  // 🟦 더미 데이터 (UI 테스트용)
-  // 실제 API 연동 시 useEffect 내부에서 fetch로 대체하면 됨.
   const dummyBook = {
     book_id,
     title: "예시 도서 제목",
@@ -15,22 +13,13 @@ export default function EditBookPage() {
     imageUrl: "",
   };
 
-  // 🟦 수정용 상태값
   const [title, setTitle] = useState(dummyBook.title);
   const [author, setAuthor] = useState(dummyBook.author);
   const [summary, setSummary] = useState(dummyBook.summary);
   const [imageUrl, setImageUrl] = useState(dummyBook.imageUrl);
-  const [isImageStale, setIsImageStale] = useState(false);
-  // 요약이 바뀌었을 때 true → 이미지 재생성 필요
 
-  // 요약 변경 감지 → 이미지 재생성 필요 표시
-  //   useEffect(() => {
-  //     if (summary !== dummyBook.summary) {
-  //       setIsImageStale(true);
-  //     } else {
-  //       setIsImageStale(false);
-  //     }
-  //   }, [summary]);
+  // 🔥 더 이상 state로 관리하지 않음 → 오류 제거됨
+  const isImageStale = summary !== dummyBook.summary;
 
   const handleSave = () => {
     console.log("수정된 데이터:", {
@@ -40,16 +29,12 @@ export default function EditBookPage() {
       imageUrl,
     });
 
-    // 실제 저장은 API 연동 예정
     navigate(`/book/${book_id}`);
   };
 
   const handleRegenerateImage = () => {
     alert("AI 이미지 재생성을 실행합니다 (테스트용).");
-
-    // UI 테스트용 더미 이미지
     setImageUrl("https://via.placeholder.com/300x200.png?text=New+AI+Image");
-    setIsImageStale(false);
   };
 
   const styles = {
@@ -123,7 +108,6 @@ export default function EditBookPage() {
     <div style={styles.container}>
       <h2>✏️ 도서 수정</h2>
 
-      {/* 제목 */}
       <input
         type="text"
         style={styles.input}
@@ -132,7 +116,6 @@ export default function EditBookPage() {
         placeholder="책 제목"
       />
 
-      {/* 저자 */}
       <input
         type="text"
         style={styles.input}
@@ -141,7 +124,6 @@ export default function EditBookPage() {
         placeholder="저자"
       />
 
-      {/* 요약 */}
       <textarea
         style={styles.textarea}
         value={summary}
@@ -149,7 +131,6 @@ export default function EditBookPage() {
         placeholder="책 요약"
       />
 
-      {/* 이미지 */}
       <div style={styles.imageBox}>
         {imageUrl ? (
           <img
@@ -162,24 +143,20 @@ export default function EditBookPage() {
         )}
       </div>
 
-      {/* 요약 변경 시 경고 */}
       {isImageStale && (
         <div style={styles.warning}>
           요약이 변경되었습니다. 이미지를 다시 생성해야 합니다.
         </div>
       )}
 
-      {/* 이미지 재생성 버튼 */}
       <button style={styles.regenerateBtn} onClick={handleRegenerateImage}>
         AI 이미지 재생성
       </button>
 
-      {/* 저장 버튼 */}
       <button style={styles.saveBtn} onClick={handleSave}>
         수정 완료
       </button>
 
-      {/* 뒤로가기 */}
       <button style={styles.backBtn} onClick={() => navigate(-1)}>
         뒤로가기
       </button>
