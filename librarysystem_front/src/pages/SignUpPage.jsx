@@ -1,6 +1,4 @@
 // src/pages/SignupPage.jsx
-// 회원가입 페이지
-
 import React from "react";
 import { Box, Paper, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
@@ -10,7 +8,7 @@ export default function SignupPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: 여기서 추후 회원가입 API 호출 예정
+    // TODO: 추후 회원가입 API 연동
   };
 
   return (
@@ -46,7 +44,15 @@ export default function SignupPage() {
           sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
         >
           <TextField label="이름" variant="outlined" size="small" fullWidth />
-          <TextField label="주소" variant="outlined" size="small" fullWidth />
+
+          <TextField
+            label="회원번호"
+            placeholder="예: 12345"
+            variant="outlined"
+            size="small"
+            fullWidth
+          />
+
           <TextField
             label="비밀번호"
             type="password"
@@ -54,12 +60,15 @@ export default function SignupPage() {
             size="small"
             fullWidth
           />
+
           <TextField
             label="전화번호"
             variant="outlined"
             size="small"
             fullWidth
           />
+
+          <TextField label="주소" variant="outlined" size="small" fullWidth />
 
           <Button
             type="submit"
