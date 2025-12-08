@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Box, Grid } from "@mui/material";
 import BookCard from "../books/BookCard";
-import {fetchBooks} from "../services/bookService";
+import { fetchBooks } from "../services/bookService";
 
 export default function MaunPage() {
   const [books, setBooks] = useState([]);
@@ -9,9 +9,9 @@ export default function MaunPage() {
   useEffect(() => {
     const loadBooks = async () => {
       try {
-        const response = await fetchBooks(); // bookService.js의 axios 함수 호출
+        const response = await fetchBooks();
         console.log("도서 목록 응답:", response.data);
-
+        console.log("요청 목록 :", response.data);
         setBooks(response.data); // 🔥 반드시 data만 저장해야 함
       } catch (err) {
         console.error("도서 목록 불러오기 실패:", err);
