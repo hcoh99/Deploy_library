@@ -44,12 +44,13 @@ export default function LoginPage() {
           sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
         >
           <TextField
-            label="이메일"
+            label="회원번호"
             variant="outlined"
             size="small"
             fullWidth
             placeholder="이메일을 입력하세요"
           />
+
           <TextField
             label="비밀번호"
             type="password"
