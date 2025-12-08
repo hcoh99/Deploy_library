@@ -10,7 +10,7 @@ function BookCard({ book }) {
 
   return (
     <Card
-      onClick={() => navigate(`/book/${id}`)}
+      onClick={() => navigate(`http://localhost:8080/api/books/${id}`)}
       sx={{
         width: '200px',
         height: '300px',

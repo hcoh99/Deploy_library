@@ -28,7 +28,7 @@ export default function MainPage() {
         // 2) 검색어 없으면 전체 조회
         const data = await fetchBooks({ page });
         console.log("전체 조회:", data);
-
+        console.log(data.books);
         setBooks(data.books || []);
         setTotalPages(data.totalPages || 1);
       } catch (err) {
@@ -54,7 +54,7 @@ export default function MainPage() {
       ) : (
         <Grid container spacing={3}>
           {books.map((book) => (
-            <Grid item key={book.id}>
+            <Grid key={book.id}>
               <BookCard book={book} />
             </Grid>
           ))}

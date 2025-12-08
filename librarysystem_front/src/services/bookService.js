@@ -56,7 +56,7 @@ export async function adminLogin(employeeId, password) {
 // Query: ?page=1&sort=latest  (정의서 예시)
 // Res: { count, books: [ { bookId, title, ..., coverImageUrl, ... }, ... ] }
 export async function fetchBooks({ page = 1, sort = "latest" } = {}) {
-  const res = await api.get("/books", {
+  const res = await api.get("/api/books", {
     params: { page, sort },
   });
   return res.data;
@@ -65,7 +65,7 @@ export async function fetchBooks({ page = 1, sort = "latest" } = {}) {
 // 도서 검색 GET /books/search?keyword=해리포터
 // Res: { count, books: [ ... ] }
 export async function searchBooks(keyword) {
-  const res = await api.get("/books/search", {
+  const res = await api.get("/api/books/search", {
     params: { keyword },
   });
   return res.data;
@@ -74,7 +74,7 @@ export async function searchBooks(keyword) {
 // 도서 상세 GET /books/{bookId}
 // Res: { bookId, title, ..., stockCount, availableStock, ... }
 export async function fetchBookById(bookId) {
-  const res = await api.get(`/books/${bookId}`);
+  const res = await api.get(`/api/books/${bookId}`);
   return res.data;
 }
 
