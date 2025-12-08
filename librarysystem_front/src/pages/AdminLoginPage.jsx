@@ -1,31 +1,37 @@
-// src/pages/LoginPage.jsx
-// 로그인 페이지
+// src/pages/AdminLoginPage.jsx
+// 관리자 로그인 페이지
 
 import React, { useState } from "react";
 import { Box, Paper, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import bookServices from "../services/bookService";
 
-export default function LoginPage() {
+export default function AdminLoginPage() {
   const navigate = useNavigate();
-  const [memberId, setMemberId] = useState("");
+  const [employeeId, setEmployeeId] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      // 🔐 로그인 API 호출
-      const { accessToken } = await bookServices.login(memberId, password);
+      // 🔐 관리자 로그인 API 호출
+      const { accessToken, role } = await bookServices.adminLogin(
+        employeeId,
+        password
+      );
 
-      // 토큰 저장
+      // 토큰 / 권한 저장 (필요에 따라 key는 팀에서 합의해서 사용)
       localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("role", role); // "ADMIN"
 
-      // 로그인 성공 → 메인으로 이동
+      // 로그인 성공 → 메인 페이지나 관리자 전용 페이지로 이동
       navigate("/");
     } catch (error) {
-      console.error("로그인 실패:", error);
-      alert("로그인에 실패했습니다. 회원번호와 비밀번호를 다시 확인해주세요.");
+      console.error("관리자 로그인 실패:", error);
+      alert(
+        "관리자 로그인에 실패했습니다. 아이디와 비밀번호를 다시 확인해주세요."
+      );
     }
   };
 
@@ -52,7 +58,7 @@ export default function LoginPage() {
           BookShelf
         </Typography>
         <Typography variant="h5" align="center" sx={{ fontWeight: 700, mb: 4 }}>
-          로그인
+          관리자 로그인
         </Typography>
 
         {/* 폼 */}
@@ -61,15 +67,15 @@ export default function LoginPage() {
           onSubmit={handleSubmit}
           sx={{ display: "flex", flexDirection: "column", gap: 2.5 }}
         >
-          {/* 회원번호 */}
+          {/* 직원 ID */}
           <TextField
-            label="회원번호"
+            label="사원번호"
             variant="outlined"
             size="small"
             fullWidth
-            placeholder="회원번호를 입력하세요"
-            value={memberId}
-            onChange={(e) => setMemberId(e.target.value)}
+            placeholder="사원번호를 입력하세요"
+            value={employeeId}
+            onChange={(e) => setEmployeeId(e.target.value)}
           />
 
           {/* 비밀번호 */}
@@ -96,30 +102,15 @@ export default function LoginPage() {
           </Button>
         </Box>
 
-        {/* 회원가입 이동 */}
+        {/* 일반 회원 로그인으로 돌아가기 */}
         <Typography
           variant="body2"
           align="center"
           sx={{ mt: 2, cursor: "pointer" }}
-          onClick={() => navigate("/signup")}
+          onClick={() => navigate("/login")}
         >
-          회원가입
+          일반 회원 로그인으로 돌아가기
         </Typography>
-
-        {/* 관리자 로그인 이동 버튼 */}
-        <Button
-          variant="text"
-          size="small"
-          sx={{
-            mt: 1,
-            display: "block",
-            mx: "auto",
-            color: "#6b7280",
-          }}
-          onClick={() => navigate("/admin/login")}
-        >
-          관리자 로그인
-        </Button>
       </Paper>
     </Box>
   );

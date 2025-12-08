@@ -12,7 +12,7 @@ export default function MaunPage() {
         const response = await fetchBooks();
         console.log("도서 목록 응답:", response.data);
         console.log("요청 목록 :", response.data);
-        setBooks(response.data); // 🔥 반드시 data만 저장해야 함
+        setBooks(response.data); 
       } catch (err) {
         console.error("도서 목록 불러오기 실패:", err);
       }
@@ -24,7 +24,7 @@ export default function MaunPage() {
   return (
     <Box>
       <h2>도서목록</h2>
-      {/* 🖼️ 도서 목록 그리드 구현 (MUI Grid 핵심) */}
+      {/* 도서 목록 그리드 구현 (MUI Grid 핵심) */}
       <Grid container spacing={3}>
         {books.map((book) => (
           <Grid key={book.id}>
