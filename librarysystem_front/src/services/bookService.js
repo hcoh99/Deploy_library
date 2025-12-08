@@ -81,7 +81,7 @@ export async function fetchBookById(bookId) {
 // 도서 등록 (관리자) POST /admin/books
 // Body: { title, author, publisher, genre, tag, coverImageUrl, price, registrationDate }
 export async function createBook(bookData) {
-  const res = await api.post("/admin/books", bookData);
+  const res = await api.post("/api/books", bookData);
   return res.data;
 }
 
