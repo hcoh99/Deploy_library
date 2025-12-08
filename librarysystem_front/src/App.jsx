@@ -12,6 +12,7 @@ import EditBookPage from "./pages/EditBookPage";
 import LoginPage from "./pages/LoginPage"; //
 import SignupPage from "./pages/SignupPage"; //
 import AdminLoginPage from "./pages/AdminLoginPage";
+import { SearchProvider } from "./context/SearchContext";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -34,5 +35,9 @@ export default function App() {
     { path: "/admin/login", element: <AdminLoginPage /> }, // 관리자 로그인 페이지
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <SearchProvider>
+      <RouterProvider router={router} />;
+    </SearchProvider>
+  )
 }

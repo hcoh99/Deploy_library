@@ -53,7 +53,14 @@ export async function adminLogin(employeeId, password) {
 // ======================= 도서/Books =======================
 
 // 도서 조회
-export const fetchBooks = () => api.get('/api/books');
+// Query: ?page=1&sort=latest  (정의서 예시)
+// Res: { count, books: [ { bookId, title, ..., coverImageUrl, ... }, ... ] }
+export async function fetchBooks({ page = 1, sort = "latest" } = {}) {
+  const res = await api.get("/api/books", {
+    params: { page, sort },
+  });
+  return res.data;
+}
 
 // 도서 검색 GET /books/search?keyword=해리포터
 // Res: { count, books: [ ... ] }

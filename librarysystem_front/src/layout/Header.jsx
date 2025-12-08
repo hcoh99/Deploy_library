@@ -8,6 +8,7 @@ import Button from "@mui/material/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import { styled } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
+import { useSearch } from "../context/SearchContext";
 
 // 검색창 스타일
 const SearchBox = styled("div")(() => ({
@@ -23,6 +24,7 @@ const SearchBox = styled("div")(() => ({
 
 export default function Header() {
   const navigate = useNavigate();
+  const { setKeyword } = useSearch();
 
   return (
     <AppBar
@@ -69,6 +71,7 @@ export default function Header() {
             <InputBase
               placeholder="검색"
               sx={{ width: "100%", fontSize: 14 }}
+              onChange={(e) => setKeyword(e.target.value)}
             />
           </SearchBox>
 
