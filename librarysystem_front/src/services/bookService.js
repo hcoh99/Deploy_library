@@ -55,14 +55,14 @@ export async function adminLogin(employeeId, password) {
 // 도서 조회
 export const fetchBooks = () => api.get('/api/books');
 
-// // 도서 검색 GET /books/search?keyword=해리포터
-// // Res: { count, books: [ ... ] }
-// export async function searchBooks(keyword) {
-//   const res = await api.get("/api/books/search", {
-//     params: { keyword },
-//   });
-//   return res.data;
-// }
+// 도서 검색 GET /books/search?keyword=해리포터
+// Res: { count, books: [ ... ] }
+export async function searchBooks(keyword) {
+  const res = await api.get("/api/books/search", {
+    params: { keyword },
+  });
+  return res.data;
+}
 
 // 도서 상세 GET /books/{bookId}
 // Res: { bookId, title, ..., stockCount, availableStock, ... }
