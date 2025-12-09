@@ -1,3 +1,4 @@
+```
 📚 Library System Frontend
 
 React 기반 도서 관리 시스템 프론트엔드 프로젝트입니다.
@@ -10,9 +11,8 @@ Styling	CSS, MUI 일부 컴포넌트 (페이지에 따라)
 State Management	React Context API (SearchContext)
 API 통신	Custom Service (bookService.js)
 
-
 📁 프로젝트 구조
-```
+
 librarysystem_front-main/
 └── librarysystem_front/
     ├── index.html
@@ -50,7 +50,7 @@ librarysystem_front-main/
         │
         └── services/
             └── bookService.js
-```
+
 
 🧩 주요 기능 소개
 
@@ -112,3 +112,4 @@ Frontend Developer: 심미혜 반선우 이한조
 📄 라이선스
 
 MIT License
+```
