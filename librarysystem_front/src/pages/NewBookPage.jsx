@@ -51,13 +51,13 @@ export default function NewBookPage() {
           prompt: description
         });
 
-        // 기존 에러 처리 유지
-        if (!result?.imageUrl || result.imageUrl.startsWith("ERROR")) {
-          alert("이미지 생성 실패: " + result.imageUrl);
+        if (!result) {
+          alert("이미지 생성 실패");
           return;
         }
 
-        setCoverImageUrl(result.imageUrl);
+        //  result 그대로 저장
+        setCoverImageUrl(result);
 
       } catch (err) {
         console.error("AI 이미지 생성 오류:", err);
