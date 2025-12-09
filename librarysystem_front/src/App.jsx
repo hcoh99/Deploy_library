@@ -24,8 +24,8 @@ export default function App() {
         { path: "add-book", element: <NewBookPage /> }, // 도서 등록 페이지
         /* 25.12.05 심미혜
         상세페이지 이동 추가 */
-        { path: "book/:book_id", element: <DetailBookPage /> }, // 상세 페이지 이동
-        { path: "book/:book_id/edit", element: <EditBookPage /> }, // 수정 페이지
+        { path: "book/:bookId", element: <DetailBookPage /> }, // 상세 페이지 이동
+        { path: "book/:bookId/edit", element: <EditBookPage /> }, // 수정 페이지
       ],
     },
     /* 25.12.05 심미혜
