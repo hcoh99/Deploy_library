@@ -38,16 +38,19 @@ export default function NewBookPage() {
       return;
     }
 
-    setLoading(true);
-    try {
-      const result = await bookServices.generateBookImage(description);
-      // result 구조: { imageUrl: "src/resou/img/hangang/1.png" } 혹은 { imageUrl: "ERROR: ..." }
+     setLoading(true);
+      try {
+        // 🔥 title + description 모두 prompt로 전달
+        const prompt = `${title}. ${description}`;
 
-      // 실패 처리
-      if (!result?.imageUrl || result.imageUrl.startsWith("ERROR")) {
-        alert("이미지 생성 실패: " + result.imageUrl);
-        return;
-      }
+        const result = await bookServices.generateBookImage(prompt);
+
+        // 기존 로직 유지
+        if (!result?.imageUrl || result.imageUrl.startsWith("ERROR")) {
+          alert("이미지 생성 실패: " + result.imageUrl);
+          return;
+        }
+
 
       // 성공 시 이미지 경로 저장
       setCoverImageUrl(result.imageUrl);
