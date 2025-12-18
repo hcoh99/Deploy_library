@@ -1,19 +1,53 @@
+# version: 0.2
+
+# phases:
+#   install:
+#     runtime-versions:
+#       nodejs: 20    # [수정 1] Node 버전을 18 -> 20으로 업그레이드
+#     commands:
+#       - echo "폴더 진입 및 라이브러리 설치 중..."
+#       - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 2] 절대 경로 사용 (가장 안전함)
+#       - npm install
+#   build:
+#     commands:
+#       - echo "빌드 시작..."
+#       - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 3] 빌드 할 때도 절대 경로로 진입
+#       - npm run build
+# artifacts:
+#   files:
+#     - '**/*'
+#   base-directory: librarysystem_front/dist
+
+
 version: 0.2
 
 phases:
-  install:
-    runtime-versions:
-      nodejs: 20    # [수정 1] Node 버전을 18 -> 20으로 업그레이드
+  pre_build:
     commands:
-      - echo "폴더 진입 및 라이브러리 설치 중..."
-      - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 2] 절대 경로 사용 (가장 안전함)
-      - npm install
+      - echo Logging in to Amazon ECR...
+      # 1. AWS ECR에 로그인 (사용자님의 ECR 주소 적용됨)
+      - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 416225317325.dkr.ecr.us-east-2.amazonaws.com
+      
+      # 2. 리포지토리 주소 변수 설정
+      - REPOSITORY_URI=416225317325.dkr.ecr.us-east-2.amazonaws.com/hcoh-library-proj
+      
+      # 3. 이미지에 붙일 태그 생성 (커밋 해시값 이용)
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=latest}
+
   build:
     commands:
-      - echo "빌드 시작..."
-      - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 3] 빌드 할 때도 절대 경로로 진입
-      - npm run build
-artifacts:
-  files:
-    - '**/*'
-  base-directory: librarysystem_front/dist
+      - echo Build started on `date`
+      - echo Building the Docker image...
+      - cd librarysystem_front
+      # 4. 도커 이미지 빌드 (Dockerfile을 보고 이미지를 굽습니다)
+      - docker build -t $REPOSITORY_URI:latest .
+      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+
+  post_build:
+    commands:
+      - echo Build completed on `date`
+      - echo Pushing the Docker image...
+      # 5. 완성된 이미지를 ECR 창고로 업로드
+      - docker push $REPOSITORY_URI:latest
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
