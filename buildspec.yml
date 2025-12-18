@@ -5,13 +5,15 @@ phases:
     runtime-versions:
       nodejs: 18
     commands:
-      - echo "라이브러리 설치 중..."
+      - echo "폴더 진입 및 라이브러리 설치 중..."
+      - cd librarysystem_front       # <--- [핵심!] 이 폴더 안으로 들어갑니다.
       - npm install
   build:
     commands:
       - echo "빌드 시작..."
+      - cd librarysystem_front       # <--- [필수!] 빌드할 때도 다시 들어가야 합니다.
       - npm run build
 artifacts:
   files:
     - '**/*'
-  base-directory: dist
+  base-directory: librarysystem_front/dist  # <--- [중요] 결과물도 이 폴더 안에 생깁니다.
