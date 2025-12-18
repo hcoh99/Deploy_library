@@ -3,17 +3,17 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 18
+      nodejs: 20    # [수정 1] Node 버전을 18 -> 20으로 업그레이드
     commands:
       - echo "폴더 진입 및 라이브러리 설치 중..."
-      - cd librarysystem_front       # <--- [핵심!] 이 폴더 안으로 들어갑니다.
+      - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 2] 절대 경로 사용 (가장 안전함)
       - npm install
   build:
     commands:
       - echo "빌드 시작..."
-      - cd librarysystem_front       # <--- [필수!] 빌드할 때도 다시 들어가야 합니다.
+      - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 3] 빌드 할 때도 절대 경로로 진입
       - npm run build
 artifacts:
   files:
     - '**/*'
-  base-directory: librarysystem_front/dist  # <--- [중요] 결과물도 이 폴더 안에 생깁니다.
+  base-directory: librarysystem_front/dist
