@@ -1,0 +1,17 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "라이브러리 설치 중..."
+      - npm install
+  build:
+    commands:
+      - echo "빌드 시작..."
+      - npm run build
+artifacts:
+  files:
+    - '**/*'
+  base-directory: dist
