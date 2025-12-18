@@ -8,7 +8,7 @@ import NewBookPage from "./pages/NewBookPage";
 import DetailBookPage from "./pages/DetailBookPage";
 import EditBookPage from "./pages/EditBookPage";
 
-// 로그인 & 회원가입
+// 로그인 & 회원가입 ++
 import LoginPage from "./pages/LoginPage"; //
 import SignupPage from "./pages/SignupPage"; //
 import AdminLoginPage from "./pages/AdminLoginPage";
