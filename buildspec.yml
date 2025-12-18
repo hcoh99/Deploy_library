@@ -1,31 +1,10 @@
-# version: 0.2
-
-# phases:
-#   install:
-#     runtime-versions:
-#       nodejs: 20    # [수정 1] Node 버전을 18 -> 20으로 업그레이드
-#     commands:
-#       - echo "폴더 진입 및 라이브러리 설치 중..."
-#       - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 2] 절대 경로 사용 (가장 안전함)
-#       - npm install
-#   build:
-#     commands:
-#       - echo "빌드 시작..."
-#       - cd $CODEBUILD_SRC_DIR/librarysystem_front  # [수정 3] 빌드 할 때도 절대 경로로 진입
-#       - npm run build
-# artifacts:
-#   files:
-#     - '**/*'
-#   base-directory: librarysystem_front/dist
-
-
 version: 0.2
 
 phases:
   install:
     commands:
       - echo Installing kubectl...
-      # EKS에 명령을 내리기 위한 도구(kubectl) 설치
+      # EKS(쿠버네티스)에 명령을 내릴 도구(kubectl) 설치
       - curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
@@ -48,20 +27,19 @@ phases:
 
   post_build:
     commands:
-      - echo Build completed on `date`
       - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       
       # ----------------------------------------------------
-      # ▼▼▼ [핵심 추가] EKS 클러스터 연결 및 배포 ▼▼▼
+      # ▼▼▼ 여기가 중요합니다! (EKS 연결 및 배포) ▼▼▼
       # ----------------------------------------------------
       - echo Updating kubeconfig...
-      # 아까 정한 이름(hcoh-library-cluster)으로 연결합니다!
+      # 방금 만든 클러스터 이름(hcoh-library-cluster)으로 접속 설정
       - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
       
       - echo Deploying to EKS...
-      # 현재 위치는 librarysystem_front 폴더 안입니다.
+      # 주문서(yaml) 파일들을 EKS 주방에 전달!
       - kubectl apply -f deployment.yaml
       - kubectl apply -f service.yaml
       - echo Deployment completed!
