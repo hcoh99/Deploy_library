@@ -4,7 +4,6 @@ phases:
   install:
     commands:
       - echo Installing kubectl...
-      # EKS(쿠버네티스)에 명령을 내릴 도구(kubectl) 설치
       - curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
       - chmod +x ./kubectl
       - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
@@ -31,15 +30,13 @@ phases:
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       
-      # ----------------------------------------------------
-      # ▼▼▼ 여기가 중요합니다! (EKS 연결 및 배포) ▼▼▼
-      # ----------------------------------------------------
       - echo Updating kubeconfig...
-      # 방금 만든 클러스터 이름(hcoh-library-cluster)으로 접속 설정
       - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
       
       - echo Deploying to EKS...
-      # 주문서(yaml) 파일들을 EKS 주방에 전달!
+      # ▼▼▼ [수정된 부분] 폴더 안으로 다시 들어갑니다! ▼▼▼
+      - cd librarysystem_front
+      
       - kubectl apply -f deployment.yaml
       - kubectl apply -f service.yaml
       - echo Deployment completed!
