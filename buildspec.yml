@@ -22,16 +22,19 @@
 version: 0.2
 
 phases:
+  install:
+    commands:
+      - echo Installing kubectl...
+      # EKS에 명령을 내리기 위한 도구(kubectl) 설치
+      - curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
+      - chmod +x ./kubectl
+      - mkdir -p $HOME/bin && cp ./kubectl $HOME/bin/kubectl && export PATH=$PATH:$HOME/bin
+
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      # 1. AWS ECR에 로그인 (사용자님의 ECR 주소 적용됨)
       - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 416225317325.dkr.ecr.us-east-2.amazonaws.com
-      
-      # 2. 리포지토리 주소 변수 설정
       - REPOSITORY_URI=416225317325.dkr.ecr.us-east-2.amazonaws.com/hcoh-library-proj
-      
-      # 3. 이미지에 붙일 태그 생성 (커밋 해시값 이용)
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
 
@@ -40,7 +43,6 @@ phases:
       - echo Build started on `date`
       - echo Building the Docker image...
       - cd librarysystem_front
-      # 4. 도커 이미지 빌드 (Dockerfile을 보고 이미지를 굽습니다)
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
 
@@ -48,6 +50,18 @@ phases:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker image...
-      # 5. 완성된 이미지를 ECR 창고로 업로드
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
+      
+      # ----------------------------------------------------
+      # ▼▼▼ [핵심 추가] EKS 클러스터 연결 및 배포 ▼▼▼
+      # ----------------------------------------------------
+      - echo Updating kubeconfig...
+      # 아까 정한 이름(hcoh-library-cluster)으로 연결합니다!
+      - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
+      
+      - echo Deploying to EKS...
+      # 현재 위치는 librarysystem_front 폴더 안입니다.
+      - kubectl apply -f deployment.yaml
+      - kubectl apply -f service.yaml
+      - echo Deployment completed!
