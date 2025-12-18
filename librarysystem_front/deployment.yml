@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: library-front-deploy
+spec:
+  replicas: 2  # 컨테이너를 2개 띄워서 안정적으로 운영
+  selector:
+    matchLabels:
+      app: library-front
+  template:
+    metadata:
+      labels:
+        app: library-front
+    spec:
+      containers:
+      - name: library-front-container
+        # ▼ 아까 만든 ECR 이미지 주소입니다.
+        image: 416225317325.dkr.ecr.us-east-2.amazonaws.com/hcoh-library-proj:latest
+        ports:
+        - containerPort: 80

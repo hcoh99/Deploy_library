@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: library-front-service
+spec:
+  type: LoadBalancer # 외부 접속용 주소(IP)를 받기 위해 필수!
+  selector:
+    app: library-front
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
