@@ -10,7 +10,7 @@ import EditBookPage from "./pages/EditBookPage";
 
 // 로그인 & 회원가입 ++
 import LoginPage from "./pages/LoginPage"; //
-import SignupPage from "./pages/SignupPage"; //
+import SignupPage from "./pages/SignUpPage"; //
 import AdminLoginPage from "./pages/AdminLoginPage";
 import { SearchProvider } from "./context/SearchContext";
 
