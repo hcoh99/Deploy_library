@@ -20,23 +20,30 @@ phases:
     commands:
       - echo Build started on `date`
       - echo Building the Docker image...
+      
+      # 1. 폴더 안으로 이동 (여기서 성공했었으니, 이 상태를 계속 유지합니다!)
       - cd librarysystem_front
+      
+      # 2. 이미지 빌드
       - docker build -t $REPOSITORY_URI:latest .
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
-
-  post_build:
-    commands:
+      
+      # 3. 이미지 업로드 (Push) - 빌드 단계에서 바로 해버립니다.
       - echo Pushing the Docker image...
       - docker push $REPOSITORY_URI:latest
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       
+      # 4. EKS 연결 및 배포
       - echo Updating kubeconfig...
       - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
       
       - echo Deploying to EKS...
-      # ▼▼▼ [수정된 부분] 폴더 안으로 다시 들어갑니다! ▼▼▼
-      - cd librarysystem_front
-      
+      # 이미 librarysystem_front 폴더 안에 있으므로 파일이 바로 보입니다!
       - kubectl apply -f deployment.yaml
       - kubectl apply -f service.yaml
+      
       - echo Deployment completed!
+
+  post_build:
+    commands:
+      - echo All done!
