@@ -12,7 +12,10 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 416225317325.dkr.ecr.us-east-2.amazonaws.com
-      - REPOSITORY_URI=416225317325.dkr.ecr.us-east-2.amazonaws.com/hcoh-library-proj
+      
+      # ▼▼▼ [수정됨] 인프라 팀에서 받은 '프론트엔드 전용' ECR 주소로 변경했습니다! ▼▼▼
+      - REPOSITORY_URI=416225317325.dkr.ecr.us-east-2.amazonaws.com/aivle-bookservice-team5-frontend
+      
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
       - IMAGE_TAG=${COMMIT_HASH:=latest}
 
@@ -20,12 +23,13 @@ phases:
     commands:
       - echo Build started on `date`
       
-      # [디버깅] 파일 목록 확인 (이제 문제 찾았으니 없어도 되지만, 혹시 몰라 남겨둡니다)
+      # [디버깅] 파일 목록 확인
       - echo "=== File List Debugging ==="
       - ls -R
       - echo "==========================="
 
       - echo Building the Docker image...
+      # Dockerfile이 librarysystem_front 폴더 안에 있으므로 경로 지정 유지
       - docker build -t $REPOSITORY_URI:latest librarysystem_front
       - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
       
@@ -37,7 +41,7 @@ phases:
       - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
       
       - echo Deploying to EKS...
-      # ▼▼▼ [수정됨] 확장자를 .yaml -> .yml 로 변경했습니다! ▼▼▼
+      # 아까 확인해주신 파일명(.yml) 그대로 유지
       - kubectl apply -f librarysystem_front/deployment.yml
       - kubectl apply -f librarysystem_front/service.yml
       

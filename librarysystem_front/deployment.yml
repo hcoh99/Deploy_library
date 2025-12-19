@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: library-front-deploy
 spec:
-  replicas: 2  # 컨테이너를 2개 띄워서 안정적으로 운영
+  replicas: 2
   selector:
     matchLabels:
       app: library-front
@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
       - name: library-front-container
-        # ▼ 아까 만든 ECR 이미지 주소입니다.
-        image: 416225317325.dkr.ecr.us-east-2.amazonaws.com/hcoh-library-proj:latest
+        # ▼ 여기를 인프라 팀이 준 'frontend' 주소로 변경했습니다!
+        image: 416225317325.dkr.ecr.us-east-2.amazonaws.com/aivle-bookservice-team5-frontend:latest
         ports:
         - containerPort: 80
