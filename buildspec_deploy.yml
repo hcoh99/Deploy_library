@@ -9,6 +9,9 @@ phases:
       - mv ./kubectl /usr/local/bin/kubectl
   pre_build:
     commands:
+      - echo "=== caller identity ==="
+      - aws sts get-caller-identity
+      
       - echo Updating kubeconfig...
       - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
   build:
