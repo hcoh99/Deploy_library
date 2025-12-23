@@ -1,24 +1,24 @@
-version: 0.2
+# version: 0.2
 
-phases:
-  install:
-    commands:
-      - echo Installing kubectl...
-      - curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
-      - chmod +x ./kubectl
-      - mv ./kubectl /usr/local/bin/kubectl
-  pre_build:
-    commands:
-      - echo "=== caller identity ==="
-      - aws sts get-caller-identity
+# phases:
+#   install:
+#     commands:
+#       - echo Installing kubectl...
+#       - curl -O https://s3.us-west-2.amazonaws.com/amazon-eks/1.31.0/2024-09-12/bin/linux/amd64/kubectl
+#       - chmod +x ./kubectl
+#       - mv ./kubectl /usr/local/bin/kubectl
+#   pre_build:
+#     commands:
+#       - echo "=== caller identity ==="
+#       - aws sts get-caller-identity
       
-      - echo Updating kubeconfig...
-      - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
-  build:
-    commands:
-      - echo Deploying to EKS using files from S3...
-      - kubectl apply -f librarysystem_front/deployment.yml
-      - kubectl apply -f librarysystem_front/service.yml
-  post_build:
-    commands:
-      - echo Deployment completed!
+#       - echo Updating kubeconfig...
+#       - aws eks update-kubeconfig --name hcoh-library-cluster --region us-east-2
+#   build:
+#     commands:
+#       - echo Deploying to EKS using files from S3...
+#       - kubectl apply -f librarysystem_front/deployment.yml
+#       - kubectl apply -f librarysystem_front/service.yml
+#   post_build:
+#     commands:
+#       - echo Deployment completed!
