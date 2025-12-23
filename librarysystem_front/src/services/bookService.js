@@ -3,7 +3,7 @@ import axios from "axios";
 
 // 공통 axios 인스턴스
 const api = axios.create({
-  //baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080",
+  //baseURL: import.meta.env.VITE_API_BASE_URL || "http://localhost:8080",주소변경
 
   baseURL: "http://k8s-default-backendi-920c8fb194-1130524743.us-east-2.elb.amazonaws.com",
 });
